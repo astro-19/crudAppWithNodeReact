@@ -3,10 +3,11 @@ const cors = require("cors")
 const mysql=require("mysql")
 const app=express();
 
-app.use(cors())
+app.use(cors());
+
 const port = 3000;
 
-mysql.createConnection({
+const db = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "",
@@ -14,7 +15,11 @@ mysql.createConnection({
 })
 
 app.get('/', (req,res) => {
-    res.json("Backend communicating...")
+    const sqlQuery = "SELECT * from student"
+    db.query(sqlQuery, (err, data) => {
+        if(err) return res.json(err)
+            return res.json(data)
+    })
 })
 
 app.listen(port, ()=> {
