@@ -35,6 +35,29 @@ app.post('/create/student', (req,res) => {
     })
 })
 
+app.put('/update/student/:id', (req,res) => {
+    const sqlQuery = "update student set `Name` =? ,`Email` = ? where ID = ?"
+    const values = [
+        req.body.name,
+        req.body.email
+    ]
+    const id = req.params.id
+    db.query(sqlQuery, [...values, id], (err, data) => {
+        if(err) return res.json(err)
+            return res.json(data)
+    })
+})
+
+app.delete('/delete/student/:id', (req,res) => {
+    const sqlQuery = "DELETE from student where ID = ?"
+
+    const id = req.params.id
+    db.query(sqlQuery, [id], (err, data) => {
+        if(err) return res.json(err)
+            return res.json(data)
+    })
+})
+
 app.listen(port, ()=> {
     console.log("Running at ", port)
 })
